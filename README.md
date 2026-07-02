@@ -2,9 +2,14 @@
 
 Immutable snapshots of the astronomical catalogs that the OpenAstro Ara
 daemon's **Data Manager** (`/api/v1/data-manager`) downloads on demand. They
-are hosted here as GitHub **release assets** so the download URLs survive
-upstream repo moves/deletions; the daemon verifies each download against a
-pinned SHA-256 before installing.
+are hosted here so the download URLs survive upstream repo moves/deletions;
+the daemon verifies each download against a pinned SHA-256 before installing.
+
+The daemon downloads the files as **commit-pinned raw URLs** (e.g.
+`https://raw.githubusercontent.com/open-astro/sky-data/<commit>/NGC.csv`) —
+NOT the release assets: release-asset downloads 302-redirect and the daemon's
+sky-data HTTP client refuses redirects as an HTTPS-downgrade guard, while raw
+URLs serve 200 directly. The GitHub release mirrors the same files for humans.
 
 These files are redistributed **unmodified** from their upstream sources,
 under their share-alike licenses, with attribution:
@@ -23,7 +28,8 @@ SHA-256 of the snapshot assets (identical to the pinned upstream bytes):
 
 ## Updating
 
-Add a NEW release (e.g. `v2`) with the refreshed files — never replace assets
-on an existing tag, since the daemon pins URL + digest per release. Update the
-`DataManagerService.Catalog` URLs and `CatalogSha256` digests in
-`open-astro/openastro-ara` in the same change.
+Commit the refreshed files to `main` and cut a matching release (e.g. `v2`) —
+never rewrite history or replace assets on an existing tag, since the daemon
+pins a commit SHA + digest. Update the `DataManagerService.Catalog` raw URLs
+(new commit SHA) and `CatalogSha256` digests in `open-astro/openastro-ara` in
+the same change.
