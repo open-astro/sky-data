@@ -66,6 +66,8 @@ https://cds.unistra.fr/vizier-org/licences_vizier.html). Cite the papers below.
 - Name = "WR NN" with the catalogue's suffixes (WR 20a, WR 2-1 …). Type = `WR*`
   (a star — planning consumers skip it; it exists to be searchable and to overlay).
 - V-Mag = Johnson V where present, else the WR narrow-band v (290 of 717 rows have
-  one); B/J/H/K as given. Hubble column carries the spectral type. Identifiers =
+  one); B/J/H/K as given. Hubble column carries the spectral type; where the
+  catalogue lists alternate classifications they are joined with ", " (never
+  ";", the field separator — 165 rows used to column-shift). Identifiers =
   HD + aliases (Gaia DR3 …). Common names = the catalogue's Nebula note (e.g.
   WR 136 → "NGC 6888") so the ring nebula resolves in search. Const is empty.
