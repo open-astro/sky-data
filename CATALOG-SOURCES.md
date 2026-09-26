@@ -57,16 +57,15 @@ https://cds.unistra.fr/vizier-org/licences_vizier.html). Cite the papers below.
   the first-listed (primary) component; all component names in Identifiers;
   NGC/IC columns filled when a component name parses as NGC/IC.
 
-## wr.csv — 226 rows
-- Source: VizieR III/215 tables `table13` (positions, names) + `table15` (spectral
-  type, v magnitude), `https://vizier.cds.unistra.fr/viz-bin/asu-tsv?-source=III/215&-out.max=unlimited&-out.add=_RAJ2000,_DEJ2000`
-- Cite: van der Hucht K.A., 2001, New Astron. Rev. 45, 135 (2001NewAR..45..135V) —
-  the VIIth Catalogue of Galactic Wolf-Rayet stars.
-- Name = "WR NN" (with the catalogue's letter suffixes, e.g. WR 20a). Type = `WR*`
-  (a star, not a deep-sky object — consumers that rank imaging targets skip it;
-  it exists to be searchable and to overlay).
-- V-Mag = `vmag` (Smith 1968 narrow-band v system, not Johnson V; 198 of 226
-  rows have one). Hubble column carries the MK spectral type (WN4, WC8+O8…).
-  Identifiers = HD / HIP / other names from table13. Const is empty.
-- The ring nebulae around WR stars (Crescent, Thor's Helmet, Sh2-308, WR 134)
-  are deep-sky objects in the other catalogs / the client's curated regions.
+## wr.csv — 717 rows
+- Source: the Galactic Wolf-Rayet Catalogue (P. Crowther, University of Sheffield),
+  `http://pacrowther.staff.shef.ac.uk/WRcat/index.php`, main table scraped 2026-09-26.
+  Supersedes the 226-row van der Hucht (2001, III/215) build.
+- Cite: Rosslowe C.K. & Crowther P.A., 2015, MNRAS 447, 2322 (2015MNRAS.447.2322R)
+  and the catalogue's own per-row references (spectral types, distances).
+- Name = "WR NN" with the catalogue's suffixes (WR 20a, WR 2-1 …). Type = `WR*`
+  (a star — planning consumers skip it; it exists to be searchable and to overlay).
+- V-Mag = Johnson V where present, else the WR narrow-band v (290 of 717 rows have
+  one); B/J/H/K as given. Hubble column carries the spectral type. Identifiers =
+  HD + aliases (Gaia DR3 …). Common names = the catalogue's Nebula note (e.g.
+  WR 136 → "NGC 6888") so the ring nebula resolves in search. Const is empty.
