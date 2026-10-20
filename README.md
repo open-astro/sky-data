@@ -15,8 +15,9 @@ The ASTAP star databases are too large for raw URLs (GitHub caps a raw file at
 100 MB), so they are published only as **release assets** on the
 [`astap-2026.10`](https://github.com/open-astro/sky-data/releases/tag/astap-2026.10)
 release. Release assets 302-redirect to `objects.githubusercontent.com`; the
-daemon's sky-data client follows a redirect only to an https URL on github.com
-or `*.githubusercontent.com` (OpenAstro Ara #1136). Each asset is a flat
+daemon's sky-data client follows a redirect only to an https URL on github.com,
+`release-assets.githubusercontent.com` or `objects.githubusercontent.com`
+(OpenAstro Ara #1136); raw/gist hosts are not trusted. Each asset is a flat
 `tar.gz` of the database tiles (`<abbrev>_<tile>.<ext>`, no directory prefix),
 repacked unmodified from Han Kleijn's SourceForge `.deb` packages
 (`astap-program/star_databases`) by the `ASTAP databases` workflow in this repo
