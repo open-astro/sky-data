@@ -1,0 +1,54 @@
+# Repack the ASTAP star databases from Han Kleijn's SourceForge .deb packages into flat,
+# reproducible tar.gz archives and attach them to a release of this repo, for the OpenAstro
+# Ara Data Manager (open-astro/openastro-ara #1136). Run by hand (workflow_dispatch); the
+# release tag must already exist. Prints the SHA-256 of each asset — pin those in
+# DataManagerService.CatalogSha256 and in README.md.
+name: ASTAP databases
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag to attach the assets to (must exist)
+        required: true
+        default: astap-2026.10
+      databases:
+        description: Space-separated database abbreviations
+        required: true
+        default: d80 g05 w08
+
+permissions:
+  contents: write
+
+jobs:
+  repack:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download, repack and upload
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+          DBS: ${{ inputs.databases }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          declare -A FILE=( [d80]=d80_star_database.deb [g05]=g05_star_database.deb [w08]=w08_star_database_mag08_astap.deb
+                            [d50]=d50_star_database.deb [d20]=d20_star_database.deb [d05]=d05_star_database.deb
+                            [v50]=v50_star_database.deb [g05]=g05_star_database.deb )
+          mkdir -p work out
+          for db in $DBS; do
+            deb="${FILE[$db]:?unknown database $db}"
+            echo "== $db <- $deb"
+            curl -sSL --retry 5 -o "work/$deb" "https://sourceforge.net/projects/astap-program/files/star_databases/$deb/download"
+            rm -rf "work/$db" && mkdir -p "work/$db"
+            dpkg-deb --fsys-tarfile "work/$deb" | tar -x -C "work/$db" --strip-components=3 --wildcards "./opt/astap/${db}_*"
+            n=$(ls "work/$db" | wc -l); bytes=$(du -sb "work/$db" | cut -f1)
+            echo "$db: $n tiles, $bytes bytes uncompressed"
+            # Reproducible: sorted names, fixed mtime, no owner, gzip without a timestamp.
+            tar --sort=name --mtime='2026-10-19 00:00:00Z' --owner=0 --group=0 --numeric-owner \
+                --format=ustar -C "work/$db" -cf - $(ls "work/$db" | LC_ALL=C sort) | gzip -n -6 > "out/astap-$db.tar.gz"
+            rm -rf "work/$db" "work/$deb"
+          done
+          (cd out && sha256sum astap-*.tar.gz | tee SHA256SUMS)
+          gh release upload "$TAG" -R "$REPO" --clobber out/astap-*.tar.gz out/SHA256SUMS
+          gh release view "$TAG" -R "$REPO" --json assets --jq '.assets[] | "\(.name) \(.size)"'
