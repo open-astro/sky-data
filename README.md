@@ -19,7 +19,9 @@ daemon's sky-data client follows a redirect only to an https URL on github.com
 or `*.githubusercontent.com` (OpenAstro Ara #1136). Each asset is a flat
 `tar.gz` of the database tiles (`<abbrev>_<tile>.<ext>`, no directory prefix),
 repacked unmodified from Han Kleijn's SourceForge `.deb` packages
-(`astap-program/star_databases`, fetched 2026-10-19).
+(`astap-program/star_databases`) by the `ASTAP databases` workflow in this repo
+(`.github/workflows/astap-databases.yml`, reproducible tar: sorted names, fixed
+mtime, no owner, `gzip -n`).
 
 | Asset | Database | Uncompressed | Fields | Licence (as shipped upstream) |
 |---|---|---|---|---|
@@ -28,9 +30,9 @@ repacked unmodified from Han Kleijn's SourceForge `.deb` packages
 | `astap-w08.tar.gz` | W08 — wide-field, magnitude 8 (1 file) | 495 184 B | above ~20° | GPL-3+ (Han Kleijn) |
 
 ```
-b2085e42032afef5ea3ed58efba1a5213cb20268bdb5fda27d27610e8882e6f4  astap-d80.tar.gz
-cfe04d68a8546238863ef6dbaba31cf08eef57fe74587cd040fe0f5fc5c460fc  astap-g05.tar.gz
-fc5d5e2306c1950ed2484d3746e73c81c4d8f080a3a01dcdb14d1b5cf08be3de  astap-w08.tar.gz
+397b267181d3f5d742e1bb220ad3ab3629e12141f365f30f6ea5b54c8f797bfc  astap-d80.tar.gz
+515f5ce998a3ec9c807199e3ee8258e0ce098b8bebf0b60e1c820928f0834c64  astap-g05.tar.gz
+ba09f32dad097c415c88b416e264f3e2eb1dbbc8266b13753ea2221fe658a911  astap-w08.tar.gz
 ```
 
 Credit: this work has made use of data from the European Space Agency (ESA)
@@ -42,8 +44,7 @@ participating in the Gaia Multilateral Agreement. The databases were compiled
 by Han Kleijn for [ASTAP](https://www.hnsky.org/astap.htm). The H17/H18
 databases are obsolete upstream and are not mirrored.
 
-To refresh: repack the new upstream `.deb` payloads the same way, cut a new
-`astap-YYYY.MM` release (never replace assets on an existing tag), and update
+To refresh: cut a new `astap-YYYY.MM` release, run the workflow against it (never replace assets on an existing tag), and update
 `DataManagerService.Catalog` + `CatalogSha256` in `open-astro/openastro-ara`.
 
 These files are redistributed **unmodified** from their upstream sources,
