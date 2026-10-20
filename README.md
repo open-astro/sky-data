@@ -26,12 +26,16 @@ mtime, no owner, `gzip -n`).
 
 | Asset | Database | Uncompressed | Fields | Licence (as shipped upstream) |
 |---|---|---|---|---|
-| `astap-d80.tar.gz` | D80 — Gaia DR3 to 8000 stars/deg² (1476 tiles) | 1 332 217 055 B | ~0.25° and up | "Free if credit is given" — copyright ESA, compiled by Han Kleijn |
+| `astap-d80.tar.gz` | D80 — Gaia DR3 to 8000 stars/deg² (1476 tiles) | 1 332 217 055 B | narrower than 0.5° | "Free if credit is given" — copyright ESA, compiled by Han Kleijn |
+| `astap-d50.tar.gz` | D50 — Gaia DR3 to 5000 stars/deg² (1476 tiles) | 951 326 950 B | 0.5° to 1° | GPL-3+ (Han Kleijn) |
+| `astap-d05.tar.gz` | D05 — Gaia DR3 to 500 stars/deg² (1476 tiles) | 108 830 225 B | 1° to 6° | GPL-3+ (Han Kleijn) |
 | `astap-g05.tar.gz` | G05 — Gaia DR3 to 500 stars/deg² (290 tiles) | 105 388 420 B | above ~6° | GPL-3+ (Han Kleijn) |
 | `astap-w08.tar.gz` | W08 — wide-field, magnitude 8 (1 file) | 495 184 B | above ~20° | GPL-3+ (Han Kleijn) |
 
 ```
 397b267181d3f5d742e1bb220ad3ab3629e12141f365f30f6ea5b54c8f797bfc  astap-d80.tar.gz
+5dbddf1a942f98ffe85daa46d79bfa84bd981e3c1500ed9d35650fbc2dce2cef  astap-d50.tar.gz
+7936db10c8478612d952620b7f368f1a3cb261e1750ba9f082fba657fd53a977  astap-d05.tar.gz
 515f5ce998a3ec9c807199e3ee8258e0ce098b8bebf0b60e1c820928f0834c64  astap-g05.tar.gz
 ba09f32dad097c415c88b416e264f3e2eb1dbbc8266b13753ea2221fe658a911  astap-w08.tar.gz
 ```
