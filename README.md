@@ -5,11 +5,46 @@ daemon's **Data Manager** (`/api/v1/data-manager`) downloads on demand. They
 are hosted here so the download URLs survive upstream repo moves/deletions;
 the daemon verifies each download against a pinned SHA-256 before installing.
 
-The daemon downloads the files as **commit-pinned raw URLs** (e.g.
-`https://raw.githubusercontent.com/open-astro/sky-data/<commit>/NGC.csv`) —
-NOT the release assets: release-asset downloads 302-redirect and the daemon's
-sky-data HTTP client refuses redirects as an HTTPS-downgrade guard, while raw
-URLs serve 200 directly. The GitHub release mirrors the same files for humans.
+The daemon downloads the catalog CSVs as **commit-pinned raw URLs** (e.g.
+`https://raw.githubusercontent.com/open-astro/sky-data/<commit>/NGC.csv`);
+the catalog releases mirror the same files for humans.
+
+## ASTAP plate-solver star databases (release `astap-2026.10`)
+
+The ASTAP star databases are too large for raw URLs (GitHub caps a raw file at
+100 MB), so they are published only as **release assets** on the
+[`astap-2026.10`](https://github.com/open-astro/sky-data/releases/tag/astap-2026.10)
+release. Release assets 302-redirect to `objects.githubusercontent.com`; the
+daemon's sky-data client follows a redirect only to an https URL on github.com
+or `*.githubusercontent.com` (OpenAstro Ara #1136). Each asset is a flat
+`tar.gz` of the database tiles (`<abbrev>_<tile>.<ext>`, no directory prefix),
+repacked unmodified from Han Kleijn's SourceForge `.deb` packages
+(`astap-program/star_databases`, fetched 2026-10-19).
+
+| Asset | Database | Uncompressed | Fields | Licence (as shipped upstream) |
+|---|---|---|---|---|
+| `astap-d80.tar.gz` | D80 — Gaia DR3 to 8000 stars/deg² (1476 tiles) | 1 332 217 055 B | ~0.25° and up | "Free if credit is given" — copyright ESA, compiled by Han Kleijn |
+| `astap-g05.tar.gz` | G05 — Gaia DR3 to 500 stars/deg² (290 tiles) | 105 388 420 B | above ~6° | GPL-3+ (Han Kleijn) |
+| `astap-w08.tar.gz` | W08 — wide-field, magnitude 8 (1 file) | 495 184 B | above ~20° | GPL-3+ (Han Kleijn) |
+
+```
+b2085e42032afef5ea3ed58efba1a5213cb20268bdb5fda27d27610e8882e6f4  astap-d80.tar.gz
+cfe04d68a8546238863ef6dbaba31cf08eef57fe74587cd040fe0f5fc5c460fc  astap-g05.tar.gz
+fc5d5e2306c1950ed2484d3746e73c81c4d8f080a3a01dcdb14d1b5cf08be3de  astap-w08.tar.gz
+```
+
+Credit: this work has made use of data from the European Space Agency (ESA)
+mission Gaia (https://www.cosmos.esa.int/gaia), processed by the Gaia Data
+Processing and Analysis Consortium (DPAC,
+https://www.cosmos.esa.int/web/gaia/dpac/consortium). Funding for the DPAC has
+been provided by national institutions, in particular the institutions
+participating in the Gaia Multilateral Agreement. The databases were compiled
+by Han Kleijn for [ASTAP](https://www.hnsky.org/astap.htm). The H17/H18
+databases are obsolete upstream and are not mirrored.
+
+To refresh: repack the new upstream `.deb` payloads the same way, cut a new
+`astap-YYYY.MM` release (never replace assets on an existing tag), and update
+`DataManagerService.Catalog` + `CatalogSha256` in `open-astro/openastro-ara`.
 
 These files are redistributed **unmodified** from their upstream sources,
 under their share-alike licenses, with attribution:
